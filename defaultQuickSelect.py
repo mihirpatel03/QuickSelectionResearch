@@ -92,7 +92,7 @@ def timeTaken(input_array):
 
 def main():  # main body code
     # max value of an element in our arrays (100 million)
-    MAX = 100000000
+    max_value = 100000000
     # minimum 10k items in an array
     minItems = 10000
     # maximum 10 million items in an array
@@ -106,7 +106,7 @@ def main():  # main body code
         # randomizing the size
         array_size = int(random.randint(minItems, maxItems))
         # generating the random array
-        input_array = createTestArray(MAX, array_size)
+        input_array = createTestArray(max_value, array_size)
         # getting the average time it takes to run quick select on this array for random k
         print("running quickselect on an array of size" + str(array_size))
         avg_time_taken = timeTaken(input_array)
