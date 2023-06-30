@@ -4,9 +4,10 @@ import time
 import math
 
 
-# given an array, a value k, and left and right indices, will return the kth smallest value
-# in that array between those two indices
 def quickSelect(arr, k, l, r):
+    # given an array, a value k, and left and right indices, will return the kth smallest value
+    # in that array between those two indices
+
     # the largest/smallest element in an array of length 1 (i.e. l==r), is that element itself
     if l == r:
         return arr[l]
@@ -32,12 +33,12 @@ def quickSelect(arr, k, l, r):
     else:
         return quickSelect(arr, k-left_length-1, p+1, r)
 
-# given an array, the index of the chosen pivot, and left and right indices, will put all values less
-# than the pivot in between the left index and the pivot, and all values greater than the pivot in
-# between the pivot and the right index, returning the new index of the pivot after this partitioning
-
 
 def partition(arr, pivot_idx, l, r):
+    # given an array, the index of the chosen pivot, and left and right indices, will put all values less
+    # than the pivot in between the left index and the pivot, and all values greater than the pivot in
+    # between the pivot and the right index, returning the new index of the pivot after this partitioning
+
     # store the value of the pivot
     pivot_val = arr[pivot_idx]
     # now move the pivot to the leftmost spot in the (sub)array
@@ -59,18 +60,18 @@ def partition(arr, pivot_idx, l, r):
     # return the pivot's location
     return idx
 
-# given the max possible value of an element, and the total number of elements the array should have,
-# generates an unsorted array of random, distinct values that meet these speciications.
-
 
 def createTestArray(maxVal, numItems):
+    # given the max possible value of an element, and the total number of elements the array should have,
+    # generates an unsorted array of random, distinct values that meet these speciications.
+
     testArray = random.sample(range(0, maxVal), numItems)
     return testArray
 
-# given an array, will return the average time it takes to run quickselect on that array (with random k)
-
 
 def timeTaken(input_array):
+    # given an array, will return the average time it takes to run quickselect on that array (with random k)
+
     times = []
     last_idx = len(input_array)-1
     # randomizing the number we are looking for
@@ -88,10 +89,8 @@ def timeTaken(input_array):
     # return average time
     return sum(times)/len(times)
 
-# main body code
 
-
-def main():
+def main():  # main body code
     # max value of an element in our arrays (100 million)
     MAX = 100000000
     # minimum 10k items in an array
@@ -109,6 +108,7 @@ def main():
         # generating the random array
         input_array = createTestArray(MAX, array_size)
         # getting the average time it takes to run quick select on this array for random k
+        print("running quickselect on an array of size" + str(array_size))
         avg_time_taken = timeTaken(input_array)
         # storing that in the dictionary
         time_dict[array_size] = avg_time_taken
