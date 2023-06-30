@@ -76,14 +76,14 @@ def timeTaken(input_array):
     # randomizing the number we are looking for
     kth = random.randint(0, last_idx)
     # average of numRuns number of runs
-    numRuns = 10
+    numRuns = 2
     for i in range(numRuns):
-        print("done with" + i + "runs out of" + numRuns)
         start = time.time()
         # running quickSelect
         quickSelect(input_array, kth, 0, last_idx)
         elapsed_time = (time.time() - start)
         times.append(elapsed_time)
+        print("done with " + str(i+1) + " run(s) out of " + str(numRuns))
 
     # return average time
     return sum(times)/len(times)
@@ -94,16 +94,16 @@ def timeTaken(input_array):
 def main():
     # max value of an element in our arrays (100 million)
     MAX = 100000000
-    # minimum 100k items in an array
-    minItems = 100000
+    # minimum 10k items in an array
+    minItems = 10000
     # maximum 10 million items in an array
-    maxItems = 10000000
+    maxItems = 100000000
     # dictionary that will store times
     time_dict = dict()
 
-    # generates i data points (i array sizes between 100k and 100 million)
+    # generates i data points (i array sizes between 10k and 100 million)
     # consider adding a way to get i distinct data points?
-    for i in range(0, 10):
+    for i in range(0, 1):
         # randomizing the size
         array_size = int(random.randint(minItems, maxItems))
         # generating the random array
@@ -114,11 +114,11 @@ def main():
         time_dict[array_size] = avg_time_taken
 
     print(time_dict)
-    # # save data to a CSV file, based on an example from
-    # # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
-    # with open('complexity.csv', 'w') as f:
-    #     for key in time_dict.keys():
-    #         f.write("%s,%s\n" % (key, time_dict[key]))
+    # save data to a CSV file, based on an example from
+    # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
+    with open('complexity.csv', 'w') as f:
+        for key in time_dict.keys():
+            f.write("%s,%s\n" % (key, time_dict[key]))
 
 
 if __name__ == "__main__":
