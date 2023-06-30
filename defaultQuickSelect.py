@@ -4,34 +4,37 @@ import time
 import math
 
 
+# given an array, a value k, and left and right indices, will return the kth smallest value
+# in that array between those two indices
 def quickSelect(arr, k, l, r):
-    # the largest/smallest element in an array of
-    # length 1 (i.e. l==r), is that element itself
+    # the largest/smallest element in an array of length 1 (i.e. l==r), is that element itself
     if l == r:
         return arr[l]
-    # partition the array around the pivot (by default the
-    # pivot is the rightmost element in the array) should still
-    # work for other pivot choices, such as l, or (l+r)//2
+    # partition the array around the pivot (by default the pivot is the rightmost element in the array)
+    # should still work for other pivot choices, such as l, or (l+r)//2
     p = partition(arr, r, l, r)
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
-    # e.g., if there are 3 elements to the left of the pivot, and
-    # we are looking for the 4th smallest element, then the pivot
-    # is itself the 4th smallest element
+
+    # CASE 1: return the pivot itself. e.g., if there are 3 elements to the left of the pivot, and we
+    # are looking for the 4th smallest element, then the pivot is itself the 4th smallest element
     if (left_length+1 == k):
         return arr[p]
-    # e.g., if there are 3 elements to the left of the pivot
-    # and we are looking for the second smallest element, we
-    # know it must be in that subarray to the left of the pivot
+
+    # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
+    # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
         return quickSelect(arr, k, l, p-1)
-    # otherwise, the kth smallest element is in the right
-    # subarray. If we were looking for the 5th smallest element
-    # in an array of size 8, and the pivot was at index 3
-    # (3 elements to its left), we are now looking for the 1st
+
+    # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
+    # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
         return quickSelect(arr, k-left_length-1, p+1, r)
+
+# given an array, the index of the chosen pivot, and left and right indices, will put all values less
+# than the pivot in between the left index and the pivot, and all values greater than the pivot in
+# between the pivot and the right index, returning the new index of the pivot after this partitioning
 
 
 def partition(arr, pivot_idx, l, r):
@@ -56,47 +59,67 @@ def partition(arr, pivot_idx, l, r):
     # return the pivot's location
     return idx
 
+# given the max possible value of an element, and the total number of elements the array should have,
+# generates an unsorted array of random, distinct values that meet these speciications.
 
-# unsorted = [22, 17, 11, 8, 21, 9, 7, 10, 12, 13]
-# kth = 5
-# print(quickSelect(unsorted, kth, 0, len(unsorted)-1))
-
-# 100k to 10M size lists, random input testing.
 
 def createTestArray(maxVal, numItems):
     testArray = random.sample(range(0, maxVal), numItems)
     return testArray
 
+# given an array, will return the average time it takes to run quickselect on that array (with random k)
 
-def get_time_taken_by_quick_select(input_list):
+
+def timeTaken(input_array):
     times = []
-    last_idx = len(input_list)-1
+    last_idx = len(input_array)-1
+    # randomizing the number we are looking for
     kth = random.randint(0, last_idx)
-    for i in range(10):
-        print("here")
+    # average of numRuns number of runs
+    numRuns = 10
+    for i in range(numRuns):
+        print("done with" + i + "runs out of" + numRuns)
         start = time.time()
-        quickSelect(input_list, kth, 0, last_idx)
-        elapsed_time_lc = (time.time() - start)
-        times.append(elapsed_time_lc)
+        # running quickSelect
+        quickSelect(input_array, kth, 0, last_idx)
+        elapsed_time = (time.time() - start)
+        times.append(elapsed_time)
 
     # return average time
     return sum(times)/len(times)
 
+# main body code
 
-MAX = 100000000
-minItems = 100000
-maxItems = 10000000
-time_dict = dict()
 
-for i in range(0, 10):
-    list_size = int(random.randint(minItems, maxItems))
-    input_list = createTestArray(MAX, list_size)
-    time_taken = get_time_taken_by_quick_select(input_list)
-    time_dict[list_size] = time_taken
+def main():
+    # max value of an element in our arrays (100 million)
+    MAX = 100000000
+    # minimum 100k items in an array
+    minItems = 100000
+    # maximum 10 million items in an array
+    maxItems = 10000000
+    # dictionary that will store times
+    time_dict = dict()
 
-print(time_dict)
-# # save data to a CSV file, based on an example from
-# # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
-# with open('complexity.csv', 'w') as f:
-#     for key in time_dict.keys():
-#         f.write("%s,%s\n" % (key, time_dict[key]))
+    # generates i data points (i array sizes between 100k and 100 million)
+    # consider adding a way to get i distinct data points?
+    for i in range(0, 10):
+        # randomizing the size
+        array_size = int(random.randint(minItems, maxItems))
+        # generating the random array
+        input_array = createTestArray(MAX, array_size)
+        # getting the average time it takes to run quick select on this array for random k
+        avg_time_taken = timeTaken(input_array)
+        # storing that in the dictionary
+        time_dict[array_size] = avg_time_taken
+
+    print(time_dict)
+    # # save data to a CSV file, based on an example from
+    # # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
+    # with open('complexity.csv', 'w') as f:
+    #     for key in time_dict.keys():
+    #         f.write("%s,%s\n" % (key, time_dict[key]))
+
+
+if __name__ == "__main__":
+    main()
