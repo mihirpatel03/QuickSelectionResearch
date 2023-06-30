@@ -1,6 +1,12 @@
+import csv
+import random
+import time
+import math
+
+
 def quickSelect(arr, k, l, r):
     # the largest/smallest element in an array of
-    # length 1 (i.e. l==r), is that element itself.
+    # length 1 (i.e. l==r), is that element itself
     if l == r:
         return arr[l]
     # partition the array around the pivot (by default the
@@ -51,6 +57,46 @@ def partition(arr, pivot_idx, l, r):
     return idx
 
 
-unsorted = [22, 17, 11, 8, 21, 9, 7, 10, 12, 13]
-kth = 5
-print(quickSelect(unsorted, kth, 0, len(unsorted)-1))
+# unsorted = [22, 17, 11, 8, 21, 9, 7, 10, 12, 13]
+# kth = 5
+# print(quickSelect(unsorted, kth, 0, len(unsorted)-1))
+
+# 100k to 10M size lists, random input testing.
+
+def createTestArray(maxVal, numItems):
+    testArray = random.sample(range(0, maxVal), numItems)
+    return testArray
+
+
+def get_time_taken_by_quick_select(input_list):
+    times = []
+    last_idx = len(input_list)-1
+    kth = random.randint(0, last_idx)
+    for i in range(10):
+        print("here")
+        start = time.time()
+        quickSelect(input_list, kth, 0, last_idx)
+        elapsed_time_lc = (time.time() - start)
+        times.append(elapsed_time_lc)
+
+    # return average time
+    return sum(times)/len(times)
+
+
+MAX = 100000000
+minItems = 100000
+maxItems = 10000000
+time_dict = dict()
+
+for i in range(0, 10):
+    list_size = int(random.randint(minItems, maxItems))
+    input_list = createTestArray(MAX, list_size)
+    time_taken = get_time_taken_by_quick_select(input_list)
+    time_dict[list_size] = time_taken
+
+print(time_dict)
+# # save data to a CSV file, based on an example from
+# # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
+# with open('complexity.csv', 'w') as f:
+#     for key in time_dict.keys():
+#         f.write("%s,%s\n" % (key, time_dict[key]))
