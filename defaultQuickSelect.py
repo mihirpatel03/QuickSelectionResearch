@@ -1,8 +1,6 @@
 import csv
 import random
 import time
-import math
-import numpy as np
 
 
 def quickSelect(arr, k, l, r):
@@ -82,7 +80,7 @@ def timeTaken(input_array):
     # randomizing the number we are looking for
     kth = random.randint(0, last_idx)
     # average of numRuns number of runs
-    numRuns = 2
+    numRuns = 10
     for i in range(numRuns):
         start = time.time()
         # running quickSelect
@@ -108,7 +106,7 @@ def main():  # main body code
 
     # generates i data points (i array sizes between 10k and 100 million)
     # consider adding a way to get i distinct data points?
-    for i in range(0, 1):
+    for i in range(0, 20):
         # randomizing the size
         array_size = int(random.randint(minItems, maxItems))
         print("array size is " + str(array_size))
