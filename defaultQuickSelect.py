@@ -2,6 +2,7 @@ import csv
 import random
 import time
 import math
+import numpy as np
 
 
 def quickSelect(arr, k, l, r):
@@ -13,7 +14,7 @@ def quickSelect(arr, k, l, r):
         return arr[l]
     # partition the array around the pivot (by default the pivot is the rightmost element in the array)
     # should still work for other pivot choices, such as l, or (l+r)//2
-    p = partition(arr, r, l, r)
+    p = partition(arr, (l+r)//2, l, r)
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
 
@@ -25,12 +26,14 @@ def quickSelect(arr, k, l, r):
     # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
+        print("now recurring on a subarray of length " + str(p-1-l))
         return quickSelect(arr, k, l, p-1)
 
     # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
     # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
+        print("now recurring on a subarray of length " + str(r-(p+1)))
         return quickSelect(arr, k-left_length-1, p+1, r)
 
 
@@ -66,6 +69,8 @@ def createTestArray(maxVal, numItems):
     # generates an unsorted array of random, distinct values that meet these speciications.
 
     testArray = random.sample(range(0, maxVal), numItems)
+    # testArray = np.random.choice(
+    #     range(1, maxVal), numItems, replace=False).tolist()
     return testArray
 
 
@@ -84,7 +89,8 @@ def timeTaken(input_array):
         quickSelect(input_array, kth, 0, last_idx)
         elapsed_time = (time.time() - start)
         times.append(elapsed_time)
-        print("done with " + str(i+1) + " run(s) out of " + str(numRuns))
+        print("\n done with " + str(i+1) +
+              " run(s) out of " + str(numRuns) + "\n")
 
     # return average time
     return sum(times)/len(times)
@@ -92,11 +98,11 @@ def timeTaken(input_array):
 
 def main():  # main body code
     # max value of an element in our arrays (100 million)
-    max_value = 100000000
+    max_value = 10000000
     # minimum 10k items in an array
-    minItems = 10000
+    minItems = 100000
     # maximum 10 million items in an array
-    maxItems = 100000000
+    maxItems = 10000000
     # dictionary that will store times
     time_dict = dict()
 
@@ -105,17 +111,17 @@ def main():  # main body code
     for i in range(0, 1):
         # randomizing the size
         array_size = int(random.randint(minItems, maxItems))
+        print("array size is " + str(array_size))
         # generating the random array
         input_array = createTestArray(max_value, array_size)
         # getting the average time it takes to run quick select on this array for random k
-        print("running quickselect on an array of size" + str(array_size))
+        print("beginning quickselect")
         avg_time_taken = timeTaken(input_array)
         # storing that in the dictionary
         time_dict[array_size] = avg_time_taken
 
     print(time_dict)
-    # save data to a CSV file, based on an example from
-    # https://www.tutorialspoint.com/How-to-save-a-Python-Dictionary-to-CSV-file
+    # save data to a CSV file
     with open('complexity.csv', 'w') as f:
         for key in time_dict.keys():
             f.write("%s,%s\n" % (key, time_dict[key]))
