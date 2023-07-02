@@ -24,10 +24,6 @@ def quickSelect(arr, k, l, r):
     # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
-        if ((p-1-l) == -1):
-            print("l=" + str(l) + " r=" + str(r) +
-                  " p=" + str(p) + " k=" + str(k))
-            exit()
         print("now recurring on a subarray of length " + str(p-1-l))
         return quickSelect(arr, k, l, p-1)
 
