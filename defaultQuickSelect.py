@@ -72,7 +72,7 @@ def createTestArray(maxVal, numItems):
     return testArray
 
 
-def timeTaken(input_array):
+def timeTaken(input_array, current_point, total_points):
     # given an array, will return the average time it takes to run quickselect on that array (with random k)
 
     times = []
@@ -88,16 +88,16 @@ def timeTaken(input_array):
         elapsed_time = (time.time() - start)
         times.append(elapsed_time)
         print("\n done with " + str(i+1) +
-              " run(s) out of " + str(numRuns) + "\n")
+              " run(s) out of " + str(numRuns) + " for data point " + str(current_point+1) + " out of " + str(total_points) + "\n")
 
     # return average time
     return sum(times)/len(times)
 
 
 def main():  # main body code
-    # max value of an element in our arrays (100 million)
+    # max value of an element in our arrays (10 million)
     max_value = 10000000
-    # minimum 10k items in an array
+    # minimum 100k items in an array
     minItems = 100000
     # maximum 10 million items in an array
     maxItems = 10000000
@@ -106,7 +106,8 @@ def main():  # main body code
 
     # generates i data points (i array sizes between 10k and 100 million)
     # consider adding a way to get i distinct data points?
-    for i in range(0, 20):
+    numDataPoints = 40
+    for i in range(0, numDataPoints):
         # randomizing the size
         array_size = int(random.randint(minItems, maxItems))
         print("array size is " + str(array_size))
@@ -114,7 +115,7 @@ def main():  # main body code
         input_array = createTestArray(max_value, array_size)
         # getting the average time it takes to run quick select on this array for random k
         print("beginning quickselect")
-        avg_time_taken = timeTaken(input_array)
+        avg_time_taken = timeTaken(input_array, i, numDataPoints)
         # storing that in the dictionary
         time_dict[array_size] = avg_time_taken
 
