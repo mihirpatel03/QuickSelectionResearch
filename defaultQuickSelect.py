@@ -8,7 +8,7 @@ def quickSelect(arr, k, l, r):
     # in that array between those two indices
 
     # the largest/smallest element in an array of length 1 (i.e. l==r), is that element itself
-    if l == r:
+    if r == l:
         return arr[l]
     # partition the array around the pivot (by default the pivot is the rightmost element in the array)
     # should still work for other pivot choices, such as l, or (l+r)//2
@@ -24,6 +24,10 @@ def quickSelect(arr, k, l, r):
     # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
+        if ((p-1-l) == -1):
+            print("l=" + str(l) + " r=" + str(r) +
+                  " p=" + str(p) + " k=" + str(k))
+            exit()
         print("now recurring on a subarray of length " + str(p-1-l))
         return quickSelect(arr, k, l, p-1)
 
@@ -67,8 +71,6 @@ def createTestArray(maxVal, numItems):
     # generates an unsorted array of random, distinct values that meet these speciications.
 
     testArray = random.sample(range(0, maxVal), numItems)
-    # testArray = np.random.choice(
-    #     range(1, maxVal), numItems, replace=False).tolist()
     return testArray
 
 
