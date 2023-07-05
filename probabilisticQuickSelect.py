@@ -11,19 +11,17 @@ def quickSelect(arr, k, l, r):
     if r == l:
         return arr[l]
 
-    # partition the array around the pivot (by default the pivot is the rightmost element in the array)
-    # should still work for other pivot choices, such as l, or (l+r)//2
-    p = partition(arr, (l+r)//2, l, r)
+    # partition the array around the randomly chosen pivot
+    pivotChoice = int(random.randint(l, r))
+    p = partition(arr, pivotChoice, l, r)
 
-    lowBound = 1/3.0
-    highBound = 2/3.0
+    lowBound = 1/4.0
+    highBound = 3/4.0
 
     # need to randomize pivot selection
     while p < int(lowBound*(r-l)) or p > int(highBound*(r-l)):
-        print(p)
-        print(int(lowBound*(r-l)))
-        print(int(highBound*(r-l)))
-        p = partition(arr, (l+r)//2, l, r)
+        pivotChoice = int(random.randint(l, r))
+        p = partition(arr, pivotChoice, l, r)
 
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
