@@ -10,9 +10,9 @@ def quickSelect(arr, k, l, r):
     # the largest/smallest element in an array of length 1 (i.e. l==r), is that element itself
     if r == l:
         return arr[l]
-    # partition the array around the pivot (by default the pivot is the rightmost element in the array)
-    # should still work for other pivot choices, such as l, or (l+r)//2
-    p = partition(arr, (l+r)//2, l, r)
+    # partition the array around the randomly chose pivot
+    pivotChoice = int(random.randint(l, r))
+    p = partition(arr, pivotChoice, l, r)
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
 
