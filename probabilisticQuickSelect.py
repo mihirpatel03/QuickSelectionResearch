@@ -19,7 +19,7 @@ def quickSelect(arr, k, l, r):
     highBound = 3/4.0
 
     # need to randomize pivot selection
-    while p < int(lowBound*(r-l)) or p > int(highBound*(r-l)):
+    while p < int(lowBound*(r-l))+l or p > int(highBound*(r-l))+l:
         pivotChoice = int(random.randint(l, r))
         p = partition(arr, pivotChoice, l, r)
 
@@ -129,9 +129,9 @@ def main():  # main body code
 
     print(time_dict)
     # save data to a CSV file
-    # with open('complexity.csv', 'w') as f:
-    #     for key in time_dict.keys():
-    #         f.write("%s,%s\n" % (key, time_dict[key]))
+    with open('probabilisticComplexity.csv', 'w') as f:
+        for key in time_dict.keys():
+            f.write("%s,%s\n" % (key, time_dict[key]))
 
 
 if __name__ == "__main__":
