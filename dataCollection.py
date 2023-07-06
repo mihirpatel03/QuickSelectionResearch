@@ -12,7 +12,7 @@ def createTestArray(maxVal, numItems):
     return testArray
 
 
-def timeTaken(input_array, current_point, total_points):
+def timeTaken(input_array, choice, current_point, total_points):
     # given an array, will return the average time it takes to run quickselect on that array (with random k)
 
     times = []
@@ -24,7 +24,7 @@ def timeTaken(input_array, current_point, total_points):
     for i in range(numRuns):
         start = time.time()
         # running quickSelect
-        quickSelect.qs(input_array, kth, 0, last_idx)
+        quickSelect.qs(input_array, kth, 0, last_idx, choice)
         elapsed_time = (time.time() - start)
         times.append(elapsed_time)
         print("\n done with " + str(i+1) +
@@ -44,6 +44,7 @@ def main():  # main body code
     numDataPoints = 4
     # dictionary that will store times
     default = dict()
+    probabilistic = dict()
 
     # generates i data points (i array sizes between 10k and 100 million)
     # consider adding a way to get i distinct data points?
@@ -54,19 +55,25 @@ def main():  # main body code
         # generating the random array
         input_array = createTestArray(max_value, array_size)
         # getting the average time it takes to run quick select on this array for random k
-        print("beginning quickselect")
-        avg_time_taken = timeTaken(input_array, currentPoint, numDataPoints)
+        print("beginning default quickselect")
+        default_time = timeTaken(
+            input_array, "default", currentPoint, numDataPoints)
         # storing that in the dictionary
-        default[array_size] = avg_time_taken
+        default[array_size] = default_time
+        print("beginning probabilistic quickselect")
+        probabilistic_time = timeTaken(
+            input_array, "probabilistic", currentPoint, numDataPoints)
+        # storing that in the dictionary
+        probabilistic[array_size] = probabilistic_time
 
         currentPoint += 1
         array_size = array_size*2
 
-    dicts = [default, default]
+    dicts = [default, probabilistic]
 
     with open('complexity.csv', 'w') as f:
         writer = csv.writer(f, delimiter='\t')
-        writer.writerow(['ID', 'dict1', 'dict2', 'dict3', 'dict4'])
+        writer.writerow(['ID', 'default', 'probabilistic'])
         for key in default.keys():
             writer.writerow([key] + [d[key] for d in dicts])
 
