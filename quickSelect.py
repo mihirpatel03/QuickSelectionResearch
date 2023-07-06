@@ -1,9 +1,7 @@
-import csv
 import random
-import time
 
 
-def quickSelect(arr, k, l, r):
+def qs(arr, k, l, r):
     # given an array, a value k, and left and right indices, will return the kth smallest value
     # in that array between those two indices
 
@@ -12,6 +10,7 @@ def quickSelect(arr, k, l, r):
         return arr[l]
     # partition the array around the randomly chose pivot
     pivotChoice = int(random.randint(l, r))
+
     p = partition(arr, pivotChoice, l, r)
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
@@ -25,14 +24,14 @@ def quickSelect(arr, k, l, r):
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
         print("now recurring on a subarray of length " + str(p-1-l))
-        return quickSelect(arr, k, l, p-1)
+        return qs(arr, k, l, p-1)
 
     # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
     # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
         print("now recurring on a subarray of length " + str(r-(p+1)))
-        return quickSelect(arr, k-left_length-1, p+1, r)
+        return qs(arr, k-left_length-1, p+1, r)
 
 
 def partition(arr, pivot_idx, l, r):
@@ -62,67 +61,27 @@ def partition(arr, pivot_idx, l, r):
     return idx
 
 
-def createTestArray(maxVal, numItems):
-    # given the max possible value of an element, and the total number of elements the array should have,
-    # generates an unsorted array of random, distinct values that meet these speciications.
-
-    testArray = random.sample(range(0, maxVal), numItems)
-    return testArray
+def default(l, r):
+    return int(random.randint(l, r))
 
 
-def timeTaken(input_array, current_point, total_points):
-    # given an array, will return the average time it takes to run quickselect on that array (with random k)
+def probabilistic():
+    # pivotChoice = int(random.randint(l, r))
+    # p = partition(arr, pivotChoice, l, r)
 
-    times = []
-    last_idx = len(input_array)-1
-    # randomizing the number we are looking for
-    kth = random.randint(0, last_idx)
-    # average of numRuns number of runs
-    numRuns = 10
-    for i in range(numRuns):
-        start = time.time()
-        # running quickSelect
-        quickSelect(input_array, kth, 0, last_idx)
-        elapsed_time = (time.time() - start)
-        times.append(elapsed_time)
-        print("\n done with " + str(i+1) +
-              " run(s) out of " + str(numRuns) + " for data point " + str(current_point+1) + " out of " + str(total_points) + "\n")
+    # lowBound = 1/4.0
+    # highBound = 3/4.0
 
-    # return average time
-    return sum(times)/len(times)
+    # # need to randomize pivot selection
+    # while p < int(lowBound*(r-l))+l or p > int(highBound*(r-l))+l:
+    # pivotChoice = int(random.randint(l, r))
+    # p = partition(arr, pivotChoice, l, r)
+    return
 
 
-def main():  # main body code
-    # max value of an element in our arrays (10 million)
-    max_value = 10000000
-    # minimum 100k items in an array
-    minItems = 100000
-    # maximum 10 million items in an array
-    maxItems = 10000000
-    # dictionary that will store times
-    time_dict = dict()
-
-    # generates i data points (i array sizes between 10k and 100 million)
-    # consider adding a way to get i distinct data points?
-    numDataPoints = 40
-    for i in range(0, numDataPoints):
-        # randomizing the size
-        array_size = int(random.randint(minItems, maxItems))
-        print("array size is " + str(array_size))
-        # generating the random array
-        input_array = createTestArray(max_value, array_size)
-        # getting the average time it takes to run quick select on this array for random k
-        print("beginning quickselect")
-        avg_time_taken = timeTaken(input_array, i, numDataPoints)
-        # storing that in the dictionary
-        time_dict[array_size] = avg_time_taken
-
-    print(time_dict)
-    # save data to a CSV file
-    with open('complexity.csv', 'w') as f:
-        for key in time_dict.keys():
-            f.write("%s,%s\n" % (key, time_dict[key]))
+def deterministic():
+    return
 
 
-if __name__ == "__main__":
-    main()
+def dynamic():
+    return
