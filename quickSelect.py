@@ -66,25 +66,48 @@ def default(arr, k, l, r):
     return partition(arr, pivotChoice, l, r)
 
 
-def probabilistic(arr, k, l, r):
-    lowBound = 1/4.0
-    highBound = 3/4.0
+# def probabilistic(arr, k, l, r):
+#     lowBound = 1/4.0
+#     highBound = 3/4.0
 
-    pivotChoice = int(random.randint(l, r))
+#     pivotChoice = int(random.randint(l, r))
+#     #can duplicate outside
+#     test_arr = arr.copy()
+#     p = partition(arr, pivotChoice, l, r)
 
-    p = partition(arr, pivotChoice, l, r)
+#     # need to randomize pivot selection
+#     while p < int(lowBound*(r-l))+l or p > int(highBound*(r-l))+l:
+#         pivotChoice = int(random.randint(l, r))
+#         arr = test_arr
+#         p = partition(arr, pivotChoice, l, r)
 
-    # need to randomize pivot selection
-    while p < int(lowBound*(r-l))+l or p > int(highBound*(r-l))+l:
-        pivotChoice = int(random.randint(l, r))
-        p = partition(arr, pivotChoice, l, r)
-
-    return p
+#     return p
 
 
 def deterministic():
     return
 
 
-def dynamic():
-    return
+def dynamic(arr, k, l, r):
+    if (r-l) > 3:
+        numSample = 3
+        sampleDict = dict()
+
+        # dictionary where the keys are values within the array, values are the corresponding indices
+        while len(sampleDict) < numSample:
+            pivotChoice = int(random.randint(l, r))
+            if arr[pivotChoice] not in sampleDict:
+                sampleDict[arr[pivotChoice]] = pivotChoice
+        assert (len(sampleDict) == 3)
+        sortedDict = sorted(sampleDict.copy())
+
+        percentage = k/float(r-l)
+        if percentage < .4:
+            return partition(arr, sampleDict[sortedDict[0]], l, r)
+        elif percentage > .6:
+            return partition(arr, sampleDict[sortedDict[2]], l, r)
+        else:
+            return partition(arr, sampleDict[sortedDict[1]], l, r)
+    else:
+        pivotChoice = int(random.randint(l, r))
+        return partition(arr, pivotChoice, l, r)

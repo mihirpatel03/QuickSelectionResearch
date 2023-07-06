@@ -45,6 +45,7 @@ def main():  # main body code
     # dictionary that will store times
     default = dict()
     probabilistic = dict()
+    dynamic = dict()
 
     # generates i data points (i array sizes between 10k and 100 million)
     # consider adding a way to get i distinct data points?
@@ -55,25 +56,22 @@ def main():  # main body code
         # generating the random array
         input_array = createTestArray(max_value, array_size)
         # getting the average time it takes to run quick select on this array for random k
-        print("beginning default quickselect")
-        default_time = timeTaken(
-            input_array, "default", currentPoint, numDataPoints)
-        # storing that in the dictionary
-        default[array_size] = default_time
-        print("beginning probabilistic quickselect")
-        probabilistic_time = timeTaken(
-            input_array, "probabilistic", currentPoint, numDataPoints)
-        # storing that in the dictionary
-        probabilistic[array_size] = probabilistic_time
+
+        choices = ["default", "dynamic"]
+
+        for i in range(len(choices)):
+            print("beginning " + choices[i] + " quickselect")
+            eval(choices[i])[array_size] = timeTaken(
+                input_array, choices[i], currentPoint, numDataPoints)
 
         currentPoint += 1
         array_size = array_size*2
 
-    dicts = [default, probabilistic]
+    dicts = [default, dynamic]
 
     with open('complexity.csv', 'w') as f:
         writer = csv.writer(f, delimiter='\t')
-        writer.writerow(['ID', 'default', 'probabilistic'])
+        writer.writerow(['ID', 'default', 'dynamic'])
         for key in default.keys():
             writer.writerow([key] + [d[key] for d in dicts])
 
