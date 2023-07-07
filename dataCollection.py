@@ -13,80 +13,97 @@ def createTestArray(maxVal, numItems):
 
 
 def timeTaken(input_array, k, choice, correctK):
-    # given an array, will return the average time it takes to run quickselect on that array (with random k)
+    # given an array and a value k, will return the time it takes to run quickSelect on those inputs. Also
+    # takes a string which determines which method of pivot choosing we use for quickSelect (default, dynamic,
+    # probabilistic, deterministic, etc.)
 
     start = time.time()
     # running quickSelect
     result = quickSelect.qs(input_array, k, 0, len(input_array)-1, choice)
+    # checks that quickSelect returned the correct value
     # assert correctK == result
     elapsed_time = (time.time() - start)
     return elapsed_time
 
 
 def main():  # main body code
-    # max value of an element in our arrays (10 million)
+    verifyResults = False
+    # max value of an element in our arrays
     max_value = 64000000
 
     # doubling values from 250k to 64M
     minItems = 250000
     maxItems = 64000000
-    # dictionary that will store times
+
+    # dictionary that will store times for each pivot choosing method
     default = dict()
     probabilistic = dict()
     dynamic = dict()
+    dicts = [default, dynamic]
 
-    # generates i data points (i array sizes between 10k and 100 million)
-    # consider adding a way to get i distinct data points?
+    # initially the size of the array is 250k, and we are on point 0 of
     array_size = minItems
-    currentPoint = 0
+    # while loop will double 250k until we get to 64M
     while array_size <= maxItems:
-        print("\n --------------------------------------")
+        print("\n--------------------------------------")
         print("ARRAY SIZE IS " + str(array_size))
         print("--------------------------------------\n")
         # generating the random array
         input_array = createTestArray(max_value, array_size)
-        x = input_array.copy()
         print("created input array")
-        # sorted_array = input_array.copy()
-        # print("copied input array")
-        # sorted_array = sorted(sorted_array)
-        # print("sorted the copied array")
+        # copying it so that when we modify arrays with the partition, we always have the original to go back to
+        copy_array = input_array.copy()
+        print("copied input array")
 
-        # getting the average time it takes to run quick select on this array for random k
+        # #necessary code if we want to check quickSelect values (algorithm works for smaller list sizes, but
+        # #it is too time consuming to sort the list and check it for higher list sizes)
+        if (verifyResults):
+            sorted_array = sorted(copy_array)
+            print("sorted the copied array")
 
+        # list of possible methods for pivot choosing, need to increase if want to add more methods
         choices = ["default", "dynamic"]
 
-        # average of numRuns number of runs
+        # number of times we want to run quickSelect on each method for a given size
         numRuns = 5
+        # lists of times and the bigger list containing all of the methods
         defaultTimes = []
         dynamicTimes = []
         times = [defaultTimes, dynamicTimes]
-        # need a list of lists
+
+        # for each run
         for i in range(numRuns):
+            # generate a random k
             kth = random.randint(1, len(input_array)-1)
-            # correctVal = sorted_array[kth-1]
-            correctVal = 0
-            print('\n running test ' + str(i+1) +
-                  " of " + str(numRuns) + "\n")
+
+            # finding the correct value, only needed when we want to verify results
+            if verifyResults:
+                correctVal = sorted_array[kth-1]
+            else:
+                correctVal = 0
+
+            print('\n running test ' + str(i+1) + " of " + str(numRuns) + "\n")
+            # for each pivot choosing method
             for i in range(len(choices)):
-                x = input_array
+                # restore the original array for this size
+                copy_array = input_array
                 print("\n beginning " + choices[i] + " quickselect \n")
+                # add the resulting time it takes to run quick select to this pivot choosing
                 times[i].append(timeTaken(
-                    x, kth, choices[i], correctVal))
+                    copy_array, kth, choices[i], correctVal))
 
         for i in range(len(choices)):
             currentArray = times[i]
             eval(choices[i])[array_size] = sum(currentArray) / \
                 len(currentArray)  # avg of the time arrays
 
-        currentPoint += 1
+        # doubling array size
         array_size = array_size*2
 
-    dicts = [default, dynamic]
-
+    # writing results to a csv file
     with open('complexity.csv', 'w') as f:
         writer = csv.writer(f, delimiter='\t')
-        writer.writerow(['ID', 'default', 'dynamic'])
+        writer.writerow(['list size', 'default', 'dynamic'])
         for key in default.keys():
             writer.writerow([key] + [d[key] for d in dicts])
 
