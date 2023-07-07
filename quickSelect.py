@@ -8,8 +8,8 @@ def qs(arr, k, l, r, pc):
     # the largest/smallest element in an array of length 1 (i.e. l==r), is that element itself
     if r == l:
         return arr[l]
-    # partition the array around the randomly chose pivot
 
+    # call a pivot choosing method (these methods also perform the partition)
     p = eval(pc)(arr, k, l, r)
 
     # length of the (sub)array from left to pivot after partition
@@ -62,7 +62,7 @@ def partition(arr, pivot_idx, l, r):
 
 
 def default(arr, k, l, r):
-    # print(l, r)
+    # default quick select simply picks a random element (by way of its index), and then we partition
     pivotChoice = int(random.randint(l, r))
     return partition(arr, pivotChoice, l, r)
 
@@ -85,31 +85,48 @@ def default(arr, k, l, r):
 #     return p
 
 
-def deterministic():
-    return
+# def deterministic():
+#     return
 
 
 def dynamic(arr, k, l, r):
+    # if the length of the current list is greater than 3, use the dynamic approach (otherwise just default)
     if (r-l) > 3:
+        # number of elements we want for our sample
         numSample = 3
+        # and the bounds we will use to pick which element we use
+        lowerBound = .4
+        upperBound = .6
+
+        # dictionary to store these sampled values
         sampleDict = dict()
 
-        # dictionary where the keys are values within the array, values are the corresponding indices
-        while len(sampleDict) < numSample:
+        # dictionary where the keys are the array's values, and values are the array's indices
+        while len(sampleDict) < numSample:  # while we don't yet have numSample numbers
+            # pick a random index
             pivotChoice = int(random.randint(l, r))
+            # if that index's corresponding value is not yet a key in our dict
             if arr[pivotChoice] not in sampleDict:
+                # make the value the key and the index the value
                 sampleDict[arr[pivotChoice]] = pivotChoice
+        # we should have 3 keys (array values) after this is done
         assert (len(sampleDict) == 3)
+        # duplicate the dict and then sort it (now we have a list of sorted array values, and we can access their
+        # corresponding indices using our dict)
         sortedDict = sorted(sampleDict.copy())
 
+        # calculate the percentage/ratio of k to the length of the array
         percentage = k/float(r-l)
-        if percentage < .4:
+        # if below the lower bound, return the smallest sample
+        if percentage < lowerBound:
             return partition(arr, sampleDict[sortedDict[0]], l, r)
-        elif percentage > .6:
+        # if above the upper bound, return the largest sample
+        elif percentage > upperBound:
             return partition(arr, sampleDict[sortedDict[2]], l, r)
+        # otherwise we are in between the bounds, so return the middle sample
         else:
             return partition(arr, sampleDict[sortedDict[1]], l, r)
+    # (we are below a length of 3, so do not need this method, just pick a random index)
     else:
-        # print(l, r)
         pivotChoice = int(random.randint(l, r))
         return partition(arr, pivotChoice, l, r)

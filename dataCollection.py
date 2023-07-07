@@ -3,6 +3,10 @@ import random
 import time
 import quickSelect
 
+# if you want to check quickSelect's correctness by sorting the list and accessing its kth element, set this to true.
+# Works for smaller values but too time consuming for larger values, so commented out when calculating the runtimes
+verifyResults = False
+
 
 def createTestArray(maxVal, numItems):
     # given the max possible value of an element, and the total number of elements the array should have,
@@ -21,13 +25,15 @@ def timeTaken(input_array, k, choice, correctK):
     # running quickSelect
     result = quickSelect.qs(input_array, k, 0, len(input_array)-1, choice)
     # checks that quickSelect returned the correct value
-    # assert correctK == result
+    if verifyResults:
+        assert correctK == result
+        print("quickselect returned the correct value!")
     elapsed_time = (time.time() - start)
     return elapsed_time
 
 
 def main():  # main body code
-    verifyResults = False
+
     # max value of an element in our arrays
     max_value = 64000000
 
@@ -66,10 +72,8 @@ def main():  # main body code
 
         # number of times we want to run quickSelect on each method for a given size
         numRuns = 5
-        # lists of times and the bigger list containing all of the methods
-        defaultTimes = []
-        dynamicTimes = []
-        times = [defaultTimes, dynamicTimes]
+        # list of each method's time list, need to add more lists if want to include more methods
+        times = [[], []]
 
         # for each run
         for i in range(numRuns):
@@ -88,14 +92,18 @@ def main():  # main body code
                 # restore the original array for this size
                 copy_array = input_array
                 print("\n beginning " + choices[i] + " quickselect \n")
-                # add the resulting time it takes to run quick select to this pivot choosing
-                times[i].append(timeTaken(
-                    copy_array, kth, choices[i], correctVal))
+                # add the resulting time it takes to run quick select to this pivot choosing's time list
+                times[i].append(
+                    timeTaken(copy_array, kth, choices[i], correctVal))
 
+        # for each pivot choice method
         for i in range(len(choices)):
+            # access the list of this method's run times
             currentArray = times[i]
+            # average them, and assign that value to this method's dictionary (with the list size as the key and
+            # the time as the value)
             eval(choices[i])[array_size] = sum(currentArray) / \
-                len(currentArray)  # avg of the time arrays
+                len(currentArray)
 
         # doubling array size
         array_size = array_size*2
