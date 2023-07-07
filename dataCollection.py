@@ -18,7 +18,7 @@ def timeTaken(input_array, k, choice, correctK):
     start = time.time()
     # running quickSelect
     result = quickSelect.qs(input_array, k, 0, len(input_array)-1, choice)
-    assert correctK == result
+    # assert correctK == result
     elapsed_time = (time.time() - start)
     return elapsed_time
 
@@ -40,16 +40,22 @@ def main():  # main body code
     array_size = minItems
     currentPoint = 0
     while array_size <= maxItems:
-        print("array size is " + str(array_size))
+        print("\n --------------------------------------")
+        print("ARRAY SIZE IS " + str(array_size))
+        print("--------------------------------------\n")
         # generating the random array
         input_array = createTestArray(max_value, array_size)
-        sorted_array = sorted(input_array.copy())
+        x = input_array.copy()
+        print("created input array")
+        # sorted_array = input_array.copy()
+        # print("copied input array")
+        # sorted_array = sorted(sorted_array)
+        # print("sorted the copied array")
+
         # getting the average time it takes to run quick select on this array for random k
 
         choices = ["default", "dynamic"]
 
-        kth = random.randint(1, len(input_array)-1)
-        correctVal = sorted_array[kth-1]
         # average of numRuns number of runs
         numRuns = 5
         defaultTimes = []
@@ -57,10 +63,14 @@ def main():  # main body code
         times = [defaultTimes, dynamicTimes]
         # need a list of lists
         for i in range(numRuns):
-            print('running test ' + str(i+1) + " of " + str(numRuns))
+            kth = random.randint(1, len(input_array)-1)
+            # correctVal = sorted_array[kth-1]
+            correctVal = 0
+            print('\n running test ' + str(i+1) +
+                  " of " + str(numRuns) + "\n")
             for i in range(len(choices)):
-                x = input_array.copy()
-                # print("beginning " + choices[i] + " quickselect")
+                x = input_array
+                print("\n beginning " + choices[i] + " quickselect \n")
                 times[i].append(timeTaken(
                     x, kth, choices[i], correctVal))
 

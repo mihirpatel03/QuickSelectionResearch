@@ -23,14 +23,14 @@ def qs(arr, k, l, r, pc):
     # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
-        # print("now recurring on a subarray of length " + str(p-1-l))
+        print("now recurring on a subarray of length " + str(p-1-l))
         return qs(arr, k, l, p-1, pc)
 
     # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
     # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
-        # print("now recurring on a subarray of length " + str(r-(p+1)))
+        print("now recurring on a subarray of length " + str(r-(p+1)))
         return qs(arr, k-left_length-1, p+1, r, pc)
 
 
