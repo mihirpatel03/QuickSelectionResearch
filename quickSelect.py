@@ -62,6 +62,7 @@ def partition(arr, pivot_idx, l, r):
 
 
 def default(arr, k, l, r):
+    # print(l, r)
     pivotChoice = int(random.randint(l, r))
     return partition(arr, pivotChoice, l, r)
 
@@ -109,5 +110,6 @@ def dynamic(arr, k, l, r):
         else:
             return partition(arr, sampleDict[sortedDict[1]], l, r)
     else:
+        # print(l, r)
         pivotChoice = int(random.randint(l, r))
         return partition(arr, pivotChoice, l, r)

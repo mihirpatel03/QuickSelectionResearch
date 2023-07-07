@@ -12,26 +12,15 @@ def createTestArray(maxVal, numItems):
     return testArray
 
 
-def timeTaken(input_array, choice, current_point, total_points):
+def timeTaken(input_array, k, choice, correctK):
     # given an array, will return the average time it takes to run quickselect on that array (with random k)
 
-    times = []
-    last_idx = len(input_array)-1
-    # randomizing the number we are looking for
-    kth = random.randint(0, last_idx)
-    # average of numRuns number of runs
-    numRuns = 10
-    for i in range(numRuns):
-        start = time.time()
-        # running quickSelect
-        quickSelect.qs(input_array, kth, 0, last_idx, choice)
-        elapsed_time = (time.time() - start)
-        times.append(elapsed_time)
-        print("\n done with " + str(i+1) +
-              " run(s) out of " + str(numRuns) + " for data point " + str(current_point+1) + " out of " + str(total_points) + "\n")
-
-    # return average time
-    return sum(times)/len(times)
+    start = time.time()
+    # running quickSelect
+    result = quickSelect.qs(input_array, k, 0, len(input_array)-1, choice)
+    assert correctK == result
+    elapsed_time = (time.time() - start)
+    return elapsed_time
 
 
 def main():  # main body code
@@ -40,8 +29,7 @@ def main():  # main body code
 
     # doubling values from 250k to 64M
     minItems = 250000
-    maxItems = 2000000
-    numDataPoints = 4
+    maxItems = 64000000
     # dictionary that will store times
     default = dict()
     probabilistic = dict()
@@ -55,14 +43,31 @@ def main():  # main body code
         print("array size is " + str(array_size))
         # generating the random array
         input_array = createTestArray(max_value, array_size)
+        sorted_array = sorted(input_array.copy())
         # getting the average time it takes to run quick select on this array for random k
 
         choices = ["default", "dynamic"]
 
+        kth = random.randint(1, len(input_array)-1)
+        correctVal = sorted_array[kth-1]
+        # average of numRuns number of runs
+        numRuns = 5
+        defaultTimes = []
+        dynamicTimes = []
+        times = [defaultTimes, dynamicTimes]
+        # need a list of lists
+        for i in range(numRuns):
+            print('running test ' + str(i+1) + " of " + str(numRuns))
+            for i in range(len(choices)):
+                x = input_array.copy()
+                # print("beginning " + choices[i] + " quickselect")
+                times[i].append(timeTaken(
+                    x, kth, choices[i], correctVal))
+
         for i in range(len(choices)):
-            print("beginning " + choices[i] + " quickselect")
-            eval(choices[i])[array_size] = timeTaken(
-                input_array, choices[i], currentPoint, numDataPoints)
+            currentArray = times[i]
+            eval(choices[i])[array_size] = sum(currentArray) / \
+                len(currentArray)  # avg of the time arrays
 
         currentPoint += 1
         array_size = array_size*2
