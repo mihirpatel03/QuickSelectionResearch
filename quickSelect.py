@@ -67,28 +67,6 @@ def default(arr, k, l, r):
     return partition(arr, pivotChoice, l, r)
 
 
-# def probabilistic(arr, k, l, r):
-#     lowBound = 1/4.0
-#     highBound = 3/4.0
-
-#     pivotChoice = int(random.randint(l, r))
-#     #can duplicate outside
-#     test_arr = arr.copy()
-#     p = partition(arr, pivotChoice, l, r)
-
-#     # need to randomize pivot selection
-#     while p < int(lowBound*(r-l))+l or p > int(highBound*(r-l))+l:
-#         pivotChoice = int(random.randint(l, r))
-#         arr = test_arr
-#         p = partition(arr, pivotChoice, l, r)
-
-#     return p
-
-
-# def deterministic():
-#     return
-
-
 def dynamic(arr, k, l, r):
     # if the length of the current list is greater than 3, use the dynamic approach (otherwise just default)
     if (r-l) > 3:

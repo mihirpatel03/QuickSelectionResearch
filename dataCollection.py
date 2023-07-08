@@ -54,29 +54,31 @@ def main():  # main body code
         print("\n--------------------------------------")
         print("ARRAY SIZE IS " + str(array_size))
         print("--------------------------------------\n")
-        # generating the random array
-        input_array = createTestArray(max_value, array_size)
-        print("created input array")
-        # copying it so that when we modify arrays with the partition, we always have the original to go back to
-        copy_array = input_array.copy()
-        print("copied input array")
-
-        # #necessary code if we want to check quickSelect values (algorithm works for smaller list sizes, but
-        # #it is too time consuming to sort the list and check it for higher list sizes)
-        if (verifyResults):
-            sorted_array = sorted(copy_array)
-            print("sorted the copied array")
-
-        # list of possible methods for pivot choosing, need to increase if want to add more methods
-        choices = ["default", "dynamic"]
 
         # number of times we want to run quickSelect on each method for a given size
         numRuns = 5
         # list of each method's time list, need to add more lists if want to include more methods
         times = [[], []]
 
+        # list of possible methods for pivot choosing, need to increase if want to add more methods
+        choices = ["default", "dynamic"]
+
         # for each run
         for i in range(numRuns):
+
+            # generating the random array
+            input_array = createTestArray(max_value, array_size)
+            print("created input array")
+            # copying it so that when we modify arrays with the partition, we always have the original to go back to
+            copy_array = input_array.copy()
+            print("copied input array")
+
+            # #necessary code if we want to check quickSelect values (algorithm works for smaller list sizes, but
+            # #it is too time consuming to sort the list and check it for higher list sizes)
+            if (verifyResults):
+                sorted_array = sorted(copy_array)
+                print("sorted the copied array")
+
             # generate a random k
             kth = random.randint(1, len(input_array)-1)
 
