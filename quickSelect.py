@@ -9,8 +9,9 @@ def qs(arr, k, l, r, pc):
     if r == l:
         return arr[l]
 
-    # call a pivot choosing method (these methods also perform the partition)
-    p = eval(pc)(arr, k, l, r)
+    # call a pivot choosing method, then perform the partition
+    pivotChoice = eval(pc)(arr, k, l, r)
+    p = partition(arr, pivotChoice, l, r)
 
     # length of the (sub)array from left to pivot after partition
     left_length = p-l
@@ -23,14 +24,14 @@ def qs(arr, k, l, r, pc):
     # CASE 2: recur on the left side. e.g., if there are 3 elements to the left of the pivot and we are
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
-        print("now recurring on a subarray of length " + str(p-1-l))
+        # print("now recurring on a subarray of length " + str(p-1-l))
         return qs(arr, k, l, p-1, pc)
 
     # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
     # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
-        print("now recurring on a subarray of length " + str(r-(p+1)))
+        # print("now recurring on a subarray of length " + str(r-(p+1)))
         return qs(arr, k-left_length-1, p+1, r, pc)
 
 
@@ -46,6 +47,7 @@ def partition(arr, pivot_idx, l, r):
     # starting index is one more than the reserved pivot spot
     idx = l+1
     for i in range(idx, r+1):
+        totalPartitions()
         # if we encounter a value smaller than the pivot
         if arr[i] < pivot_val:
             # swap it with the current pivot location
@@ -62,9 +64,8 @@ def partition(arr, pivot_idx, l, r):
 
 
 def default(arr, k, l, r):
-    # default quick select simply picks a random element (by way of its index), and then we partition
-    pivotChoice = int(random.randint(l, r))
-    return partition(arr, pivotChoice, l, r)
+    # default quick select simply picks a random element (by way of its index)
+    return int(random.randint(l, r))
 
 
 def dynamic(arr, k, l, r):
@@ -97,14 +98,17 @@ def dynamic(arr, k, l, r):
         percentage = k/float(r-l)
         # if below the lower bound, return the smallest sample
         if percentage < lowerBound:
-            return partition(arr, sampleDict[sortedDict[0]], l, r)
+            return sampleDict[sortedDict[0]]
         # if above the upper bound, return the largest sample
         elif percentage > upperBound:
-            return partition(arr, sampleDict[sortedDict[2]], l, r)
+            return sampleDict[sortedDict[2]]
         # otherwise we are in between the bounds, so return the middle sample
         else:
-            return partition(arr, sampleDict[sortedDict[1]], l, r)
+            return sampleDict[sortedDict[1]]
     # (we are below a length of 3, so do not need this method, just pick a random index)
     else:
-        pivotChoice = int(random.randint(l, r))
-        return partition(arr, pivotChoice, l, r)
+        return int(random.randint(l, r))
+
+
+def totalPartitions():
+    return

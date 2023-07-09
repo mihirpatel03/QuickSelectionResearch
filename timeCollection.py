@@ -120,5 +120,11 @@ def main():  # main body code
             writer.writerow([key] + [d[key] for d in dicts])
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
+
+
+def main2():
+    input_array = random.sample(range(0, 200), 100)
+    kth = random.randint(1, len(input_array)-1)
+    val = quickSelect.qs(input_array, kth, 0, len(input_array)-1, "default")
