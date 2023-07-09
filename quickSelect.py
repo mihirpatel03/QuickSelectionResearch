@@ -47,7 +47,7 @@ def partition(arr, pivot_idx, l, r):
     # starting index is one more than the reserved pivot spot
     idx = l+1
     for i in range(idx, r+1):
-        totalPartitions()
+        totalPartitionIterations()
         # if we encounter a value smaller than the pivot
         if arr[i] < pivot_val:
             # swap it with the current pivot location
@@ -110,5 +110,5 @@ def dynamic(arr, k, l, r):
         return int(random.randint(l, r))
 
 
-def totalPartitions():
+def totalPartitionIterations():
     return
