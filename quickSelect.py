@@ -77,19 +77,13 @@ def dynamic(arr, k, l, r):
         lowerBound = .4
         upperBound = .6
 
-        # dictionary to store these sampled values
-        sampleDict = dict()
+        # pick 3 random indices
+        sampleArray = random.sample(range(l, r), numSample)
+        sampleDict = {}
+        # make a dictionary where the keys are the values from the array, and the values are indices from the array
+        for i in range(len(sampleArray)):
+            sampleDict[arr[sampleArray[i]]] = sampleArray[i]
 
-        # dictionary where the keys are the array's values, and values are the array's indices
-        while len(sampleDict) < numSample:  # while we don't yet have numSample numbers
-            # pick a random index
-            pivotChoice = int(random.randint(l, r))
-            # if that index's corresponding value is not yet a key in our dict
-            if arr[pivotChoice] not in sampleDict:
-                # make the value the key and the index the value
-                sampleDict[arr[pivotChoice]] = pivotChoice
-        # we should have 3 keys (array values) after this is done
-        assert (len(sampleDict) == 3)
         # duplicate the dict and then sort it (now we have a list of sorted array values, and we can access their
         # corresponding indices using our dict)
         sortedDict = sorted(sampleDict.copy())

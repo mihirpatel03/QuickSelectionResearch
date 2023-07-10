@@ -34,7 +34,7 @@ def timeTaken(input_array, k, choice, correctK):
     return elapsed_time
 
 
-def main():  # main body code
+if __name__ == "__main__":
 
     # max value of an element in our arrays
     max_value = 100000000
@@ -118,13 +118,3 @@ def main():  # main body code
         writer.writerow(['list size', 'default', 'dynamic'])
         for key in default.keys():
             writer.writerow([key] + [d[key] for d in dicts])
-
-
-# if __name__ == "__main__":
-#     main()
-
-
-def main2():
-    input_array = random.sample(range(0, 200), 100)
-    kth = random.randint(1, len(input_array)-1)
-    val = quickSelect.qs(input_array, kth, 0, len(input_array)-1, "default")

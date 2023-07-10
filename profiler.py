@@ -16,48 +16,57 @@ def createTestArray(maxVal, numItems):
 
 if __name__ == "__main__":
 
-    choices = ["dynamic", "default"]
+    choices = ["default"]
     choicesDict = dict()
 
-    input_array = createTestArray(64000000, 8000000)
-    kth = random.randint(1, len(input_array)-1)
+    numRuns = 5
+    currentSize = 10000000
+    maxVal = 100000000
+    totalOperations = [[], []]
 
-    testArrays = []
-    testArrays.append(input_array)
-    for i in range(1, len(choices)):
-        testArrays.append(input_array.copy())
+    for i in range(numRuns):
 
-    pr = cProfile.Profile()
+        input_array = createTestArray(maxVal, currentSize)
+        kth = random.randint(1, len(input_array)-1)
+
+        testArrays = []
+        testArrays.append(input_array)
+        for i in range(1, len(choices)):
+            testArrays.append(input_array.copy())
+
+        pr = cProfile.Profile()
+
+        for i in range(len(choices)):
+            # print(testArrays[i])
+
+            pr.enable()
+
+            val = quickSelect.qs(testArrays[i], kth, 0, len(
+                testArrays[i])-1, choices[i])
+
+            pr.disable()
+
+            result = io.StringIO()
+            pstats.Stats(pr, stream=result).strip_dirs().sort_stats(
+                pstats.SortKey.CALLS).print_stats()
+            result = result.getvalue()
+            # chop the string into a csv-like buffer
+            result = 'ncalls'+result.split('ncalls')[-1]
+            result = '\n'.join([','.join(line.rstrip().split(None, 5))
+                                for line in result.split('\n')])
+            # save it to disk
+
+            with open(choices[i]+'.csv', 'w') as f:
+                # f=open(result.rsplit('.')[0]+'.csv','w')
+                f.write(result)
+                f.close()
+
+            df = pd.read_csv(choices[i]+'.csv')
+            # gets only the column related to the number of times methods are called
+            totalOperations[i].append(int(df.ncalls[0]))
+            # print(testArrays[i])
 
     for i in range(len(choices)):
-        # print(testArrays[i])
-
-        pr.enable()
-
-        val = quickSelect.qs(testArrays[i], kth, 0,
-                             len(testArrays[i])-1, choices[i])
-
-        pr.disable()
-
-        result = io.StringIO()
-        pstats.Stats(pr, stream=result).strip_dirs().sort_stats(
-            pstats.SortKey.CALLS).print_stats()
-        result = result.getvalue()
-        # chop the string into a csv-like buffer
-        result = 'ncalls'+result.split('ncalls')[-1]
-        result = '\n'.join([','.join(line.rstrip().split(None, 5))
-                            for line in result.split('\n')])
-        # save it to disk
-
-        with open(choices[i]+'.csv', 'w') as f:
-            # f=open(result.rsplit('.')[0]+'.csv','w')
-            f.write(result)
-            f.close()
-
-        df = pd.read_csv(choices[i]+'.csv')
-        # gets only the column related to the number of times methods are called
-        totalPartitionIterations = df.ncalls[0]
-        choicesDict[choices[i]] = totalPartitionIterations
-        # print(testArrays[i])
-
-    print(choicesDict)
+        ops = int(sum(totalOperations[i])/len(totalOperations[i]))
+        print("for an array size of " + str(currentSize) + ", " +
+              choices[i] + " takes on average " + str(ops) + " operations.")
