@@ -16,23 +16,26 @@ def createTestArray(maxVal, numItems):
 
 if __name__ == "__main__":
 
-    choices = ["default", "dynamic"]
+    choices = ["dynamic", "default"]
     choicesDict = dict()
 
-    input_array = createTestArray(32000000, 16000000)
+    input_array = createTestArray(64000000, 8000000)
     kth = random.randint(1, len(input_array)-1)
+
+    testArrays = []
+    testArrays.append(input_array)
+    for i in range(1, len(choices)):
+        testArrays.append(input_array.copy())
 
     pr = cProfile.Profile()
 
-    input_array = createTestArray(32000, 1600)
-    kth = random.randint(1, len(input_array)-1)
-
-    for i in range(1, 2):
+    for i in range(len(choices)):
+        # print(testArrays[i])
 
         pr.enable()
 
-        val = quickSelect.qs(input_array, kth, 0,
-                             len(input_array)-1, choices[i])
+        val = quickSelect.qs(testArrays[i], kth, 0,
+                             len(testArrays[i])-1, choices[i])
 
         pr.disable()
 
@@ -46,14 +49,15 @@ if __name__ == "__main__":
                             for line in result.split('\n')])
         # save it to disk
 
-        with open('test.csv', 'w') as f:
+        with open(choices[i]+'.csv', 'w') as f:
             # f=open(result.rsplit('.')[0]+'.csv','w')
             f.write(result)
             f.close()
 
-        df = pd.read_csv("test.csv")
+        df = pd.read_csv(choices[i]+'.csv')
         # gets only the column related to the number of times methods are called
         totalPartitionIterations = df.ncalls[0]
         choicesDict[choices[i]] = totalPartitionIterations
+        # print(testArrays[i])
 
     print(choicesDict)

@@ -1,0 +1,18 @@
+ncalls,tottime,percall,cumtime,percall,filename:lineno(function)
+25350683,1.135,0.000,1.135,0.000,quickSelect.py:113(totalPartitionIterations)
+141,0.000,0.000,0.000,0.000,{built-in method builtins.len}
+133,0.000,0.000,0.000,0.000,{method 'getrandbits' of '_random.Random' objects}
+85,0.000,0.000,0.000,0.000,{method 'bit_length' of 'int' objects}
+85,0.000,0.000,0.000,0.000,random.py:237(_randbelow_with_getrandbits)
+85,0.000,0.000,0.000,0.000,random.py:290(randrange)
+85,0.000,0.000,0.000,0.000,random.py:334(randint)
+29,0.002,0.000,0.002,0.000,{built-in method builtins.eval}
+29,29.444,1.015,30.579,1.054,quickSelect.py:38(partition)
+29,0.000,0.000,0.001,0.000,quickSelect.py:71(dynamic)
+29/1,0.000,0.000,30.581,30.581,quickSelect.py:4(qs)
+28,0.000,0.000,0.000,0.000,{method 'copy' of 'dict' objects}
+28,0.000,0.000,0.000,0.000,{built-in method builtins.sorted}
+1,0.000,0.000,0.000,0.000,{method 'disable' of '_lsprof.Profiler' objects}
+1,0.000,0.000,0.000,0.000,<string>:1(<module>)
+
+
