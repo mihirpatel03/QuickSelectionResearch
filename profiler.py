@@ -1,5 +1,5 @@
 import random
-import quickSelect
+import default
 import cProfile
 import pstats
 import io
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             start = time.time()
             pr.enable()
 
-            val = quickSelect.qs(testArrays[i], kth, 0, len(
+            val = default.qs(testArrays[i], kth, 0, len(
                 testArrays[i])-1, choices[i])
 
             pr.disable()

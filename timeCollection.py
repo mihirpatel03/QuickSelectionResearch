@@ -1,7 +1,7 @@
 import csv
 import random
 import time
-import quickSelect
+import default
 import cProfile
 import re
 
@@ -25,7 +25,7 @@ def timeTaken(input_array, k, choice, correctK):
 
     start = time.time()
     # running quickSelect
-    result = quickSelect.qs(input_array, k, 0, len(input_array)-1, choice)
+    result = default.qs(input_array, k, 0, len(input_array)-1, choice)
     # checks that quickSelect returned the correct value
     if verifyResults:
         assert correctK == result

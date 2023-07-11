@@ -1,7 +1,7 @@
 import random
 
 
-def qs(arr, k, l, r, pc):
+def qs(arr, k, l, r):
     # given an array, a value k, and left and right indices, will return the kth smallest value
     # in that array between those two indices
 
@@ -9,8 +9,9 @@ def qs(arr, k, l, r, pc):
     if r == l:
         return arr[l]
 
-    # call a pivot choosing method, then perform the partition
-    pivotChoice = eval(pc)(arr, k, l, r)
+    # call a pivot choosing method, then perform the partition, can call default or dynamic here
+    pivotChoice = default(arr, k, l, r)
+    # pivotChoice = dynamic(arr, k, l, r)
     p = partition(arr, pivotChoice, l, r)
 
     # length of the (sub)array from left to pivot after partition
@@ -25,14 +26,14 @@ def qs(arr, k, l, r, pc):
     # looking for the second smallest element, we know it must be in that subarray to the left of the pivot
     elif left_length+1 > k:
         # print("now recurring on a subarray of length " + str(p-1-l))
-        return qs(arr, k, l, p-1, pc)
+        return qs(arr, k, l, p-1)
 
     # CASE 3: recur on the right side. e.g., if we were looking for the 5th smallest element in an array
     # of size 8, and the pivot was at index 3 (3 elements to its left), we are now looking for the 1st
     # smallest element in the right subarray, of length 4.
     else:
         # print("now recurring on a subarray of length " + str(r-(p+1)))
-        return qs(arr, k-left_length-1, p+1, r, pc)
+        return qs(arr, k-left_length-1, p+1, r)
 
 
 def partition(arr, pivot_idx, l, r):
@@ -47,8 +48,6 @@ def partition(arr, pivot_idx, l, r):
     # starting index is one more than the reserved pivot spot
     idx = l+1
     for i in range(idx, r+1):
-
-        totalOperations()
         # if we encounter a value smaller than the pivot
         if arr[i] < pivot_val:
             # swap it with the current pivot location
@@ -103,7 +102,3 @@ def dynamic(arr, k, l, r):
     # (we are below a length of 3, so do not need this method, just pick a random index)
     else:
         return int(random.randint(l, r))
-
-
-def totalOperations():
-    return
