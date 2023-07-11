@@ -40,8 +40,8 @@ if __name__ == "__main__":
     max_value = 100000000
 
     # doubling values from 250k to 64M
-    minItems = 250000
-    maxItems = 64000000
+    minItems = 32000000
+    maxItems = 32000000
 
     # dictionary that will store times for each pivot choosing method
     default = dict()

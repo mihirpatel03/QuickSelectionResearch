@@ -4,6 +4,7 @@ import cProfile
 import pstats
 import io
 import pandas as pd
+import time
 
 
 def createTestArray(maxVal, numItems):
@@ -16,11 +17,11 @@ def createTestArray(maxVal, numItems):
 
 if __name__ == "__main__":
 
-    choices = ["default"]
+    choices = ["default", "dynamic"]
     choicesDict = dict()
 
-    numRuns = 5
-    currentSize = 10000000
+    numRuns = 1
+    currentSize = 16000000
     maxVal = 100000000
     totalOperations = [[], []]
 
@@ -39,12 +40,14 @@ if __name__ == "__main__":
         for i in range(len(choices)):
             # print(testArrays[i])
 
+            start = time.time()
             pr.enable()
 
             val = quickSelect.qs(testArrays[i], kth, 0, len(
                 testArrays[i])-1, choices[i])
 
             pr.disable()
+            print(time.time()-start)
 
             result = io.StringIO()
             pstats.Stats(pr, stream=result).strip_dirs().sort_stats(

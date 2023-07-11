@@ -47,6 +47,7 @@ def partition(arr, pivot_idx, l, r):
     # starting index is one more than the reserved pivot spot
     idx = l+1
     for i in range(idx, r+1):
+
         totalOperations()
         # if we encounter a value smaller than the pivot
         if arr[i] < pivot_val:
