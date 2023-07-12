@@ -20,40 +20,41 @@ def createTestArray(maxVal, numItems):
 if __name__ == "__main__":
 
     currentSize = 10
-    maxVal = 1000
+    maxVal = 100
 
     input_array = createTestArray(maxVal, currentSize)
     copy_array = copy.deepcopy(input_array)
     kth = random.randint(1, len(input_array)-1)
-    # print(input_array)
-    # print(kth)
 
-    lp = LineProfiler()
-    lp.add_function(dynamic.partition)
-    lp.add_function(dynamic.dynamic)
-    lp_wrapper = lp(dynamic.qs)
-    lp_wrapper(input_array, kth, 0, len(input_array)-1)
+    dynamicProf = LineProfiler()
+    dynamicProf.add_function(dynamic.partition)
+    dynamicProf.add_function(dynamic.dynamic)
+    dynamicProfWrapper = dynamicProf(dynamic.qs)
+    dynamicProfWrapper(input_array, kth, 0, len(input_array)-1)
 
-    result = io.StringIO()
-    with redirect_stdout(result):
-        lp.print_stats()
-    result = result.getvalue()
-    # result = 'Hits'+result.split('Hits')[-1]
-    # result = '\n'.join([','.join(line.rstrip().split(None, 5))
-    #                     for line in result.split('\n')])
-    print(result)
+    dynamicResult = io.StringIO()
+    with redirect_stdout(dynamicResult):
+        dynamicProf.print_stats()
+    dynamicResult = dynamicResult.getvalue()
 
-    # dp = LineProfiler()
-    # # lp.add_function(dynamic.partition)
-    # # lp.add_function(dynamic.dynamic)
-    # dp_wrapper = dp(default.qs)
-    # dp_wrapper(copy_array, kth, 0, len(copy_array)-1)
+    dynamicTime = dynamicResult.split("Total time: ")[1].split("s")[0]
+    # print("dynamic cutoff quickselect runs in " + dynamicTime + " seconds")
+    # print(dynamicResult.split("Line Contents")[1][10])
+    for i in range(10, 40):
+        print(dynamicResult[i])
 
-    # result2 = io.StringIO()
-    # with redirect_stdout(result2):
-    #     dp.print_stats()
-    # result2 = result2.getvalue()
-    # # result = 'Hits'+result.split('Hits')[-1]
-    # # result = '\n'.join([','.join(line.rstrip().split(None, 5))
-    # #                     for line in result.split('\n')])
-    # print(result2)
+    # defaultProf = LineProfiler()
+    # defaultProf.add_function(default.partition)
+    # defaultProfWrapper = defaultProf(default.qs)
+    # defaultProfWrapper(copy_array, kth, 0, len(copy_array)-1)
+
+    # defaultResult = io.StringIO()
+    # with redirect_stdout(defaultResult):
+    #     defaultProf.print_stats()
+    # defaultResult = defaultResult.getvalue()
+
+    # defaultTime = defaultResult.split("Total time: ")[1].split("s")[0]
+    # print("default quickselect runs in " + defaultTime + " seconds")
+
+    # print(dynamicResult)
+    # print(defaultResult)
