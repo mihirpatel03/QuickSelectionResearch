@@ -1,15 +1,14 @@
 
 import random
 import time
-import default
-import dynamic
+from default import Default
+from dynamic import Dynamic
 import floydRivest
 import copy
 
 # if you want to check quickSelect's correctness by sorting the list and accessing its kth element, set this to true.
 # Works for smaller values but too time consuming for larger values, so commented out when calculating the runtimes
 verifyResults = False
-partitionIterations = 0
 
 
 def createTestArray(maxVal, numItems):
@@ -35,18 +34,17 @@ if __name__ == "__main__":
         fra_array = default_array[:]
         kth = random.randint(1, len(default_array)-1)
 
-        partitionIterations = 0
+        default = Default()
         start = time.time()
         defaultResult = default.qs(default_array, kth, 0, len(default_array)-1)
         defaultTimes.append(time.time()-start)
-        print(partitionIterations)
-        defaultOps.append(partitionIterations)
+        defaultOps.append(default.partitionIterations)
 
-        partitionIterations = 0
+        dynamic = Dynamic()
         start = time.time()
         dynamicResult = dynamic.qs(dynamic_array, kth, 0, len(dynamic_array)-1)
         dynamicTimes.append(time.time()-start)
-        dynamicOps.append(partitionIterations)
+        dynamicOps.append(dynamic.partitionIterations)
 
         # start = time.time()
         # fraResult = floydRivest.select(fra_array, kth, 0, len(fra_array)-1)
@@ -62,4 +60,4 @@ if __name__ == "__main__":
     # print(avg(dynamicTimes), dynamicTimes)
     # print(avg(fraTimes), fraTimes)
     print(avg(defaultOps), defaultOps)
-    print(avg(dynamicOps), defaultOps)
+    print(avg(dynamicOps), dynamicOps)
