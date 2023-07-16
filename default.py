@@ -1,4 +1,5 @@
 import random
+import timeCollection
 
 
 def qs(arr, k, l, r):
@@ -20,6 +21,7 @@ def partition(arr, pivot_idx, l, r):
     arr[pivot_idx], arr[l] = arr[l], arr[pivot_idx]
     idx = l+1
     for i in range(idx, r+1):
+        timeCollection.partitionIterations += 1
         if arr[i] < pivot_val:
             arr[i], arr[idx] = arr[idx], arr[i]
             idx += 1
