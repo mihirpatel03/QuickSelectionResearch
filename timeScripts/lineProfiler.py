@@ -1,12 +1,10 @@
 import random
-import default
-import floydRivest
 import io
 import pandas as pd
-import dynamic
 from line_profiler import LineProfiler
 from contextlib import redirect_stdout
-import copy
+import cProfile
+import pstats
 
 
 def createTestArray(maxVal, numItems):
@@ -61,43 +59,61 @@ def avg(input_list):
 
 
 if __name__ == "__main__":
+    pass
+    # lp = LineProfiler()
+    # lp_wrapper = lp(test)
+    # for i in range(5):
+    #     test()
+    # lp.print_stats()
 
-    currentSize = 10000
-    maxVal = 10000000
+    # pr = cProfile.Profile()
+    # pr.enable()
+    # x = createTestArray(100000000, 4000000)
+    # pr.disable()
 
-    dynamicOps = []
-    defaultOps = []
-    dynamicTimes = []
-    defaultTimes = []
+    # result = io.StringIO()
+    # pstats.Stats(pr, stream=result).strip_dirs().print_stats()
+    # print(result.getvalue())
 
-    numRuns = 1
-    for i in range(numRuns):
 
-        input_array = createTestArray(maxVal, currentSize)
-        copy_array = copy.deepcopy(input_array)
-        kth = random.randint(1, len(input_array)-1)
+# if __name__ == "__main__":
 
-        dynamicProf = LineProfiler()
-        dynamicProf.add_function(dynamic.partition)
-        dynamicProf.add_function(dynamic.dynamic)
-        dynamicProfWrapper = dynamicProf(dynamic.qs)
-        dynamicProfWrapper(input_array, kth, 0, len(input_array)-1)
-        dynamicResult = getOutput(dynamicProf)
-        print(dynamicResult)
+#     currentSize = 10000
+#     maxVal = 10000000
 
-        dynamicOps.append(printHits(dynamicResult))
-        dynamicTimes.append(printTime(dynamicResult))
+#     dynamicOps = []
+#     defaultOps = []
+#     dynamicTimes = []
+#     defaultTimes = []
 
-        defaultProf = LineProfiler()
-        defaultProf.add_function(default.partition)
-        defaultProfWrapper = defaultProf(default.qs)
-        defaultProfWrapper(copy_array, kth, 0, len(copy_array)-1)
-        defaultResult = getOutput(defaultProf)
+#     numRuns = 1
+#     for i in range(numRuns):
 
-        defaultOps.append(printHits(defaultResult))
-        defaultTimes.append(printTime(defaultResult))
+#         input_array = createTestArray(maxVal, currentSize)
+#         copy_array = copy.deepcopy(input_array)
+#         kth = random.randint(1, len(input_array)-1)
 
-    # print(str(avg(dynamicOps)))
-    # print(str(avg(dynamicTimes)))
-    # print(str(avg(defaultOps)))
-    # print(str(avg(defaultTimes)))
+#         dynamicProf = LineProfiler()
+#         dynamicProf.add_function(dynamic.partition)
+#         dynamicProf.add_function(dynamic.dynamic)
+#         dynamicProfWrapper = dynamicProf(dynamic.qs)
+#         dynamicProfWrapper(input_array, kth, 0, len(input_array)-1)
+#         dynamicResult = getOutput(dynamicProf)
+#         print(dynamicResult)
+
+#         dynamicOps.append(printHits(dynamicResult))
+#         dynamicTimes.append(printTime(dynamicResult))
+
+#         defaultProf = LineProfiler()
+#         defaultProf.add_function(default.partition)
+#         defaultProfWrapper = defaultProf(default.qs)
+#         defaultProfWrapper(copy_array, kth, 0, len(copy_array)-1)
+#         defaultResult = getOutput(defaultProf)
+
+#         defaultOps.append(printHits(defaultResult))
+#         defaultTimes.append(printTime(defaultResult))
+
+#     # print(str(avg(dynamicOps)))
+#     # print(str(avg(dynamicTimes)))
+#     # print(str(avg(defaultOps)))
+#     # print(str(avg(defaultTimes)))
