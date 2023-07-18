@@ -34,16 +34,16 @@ def avg(input_list):
 
 if __name__ == "__main__":
 
-    max_value, array_size, numRuns = 100000000, 32000000, 1
+    max_value, array_size, numRuns = 100000000, 64000000, 1
     defaultTimes, dynamicTimes, fraTimes = [], [], []
     defaultOps, dynamicOps, fraOps = [], [], []
     for i in range(numRuns):
         print("starting run " + str(i) + " of " + str(numRuns))
-        inp = shuffleTestArray(max_value, array_size)
+        inp = sampleTestArray(max_value, array_size)
         kth = random.randint(1, len(inp)-1)
 
         print("starting default")
-        x = inp
+        x = inp[:]
         default = Default(x)
         print("done copying")
         start1 = time.time()
@@ -51,36 +51,36 @@ if __name__ == "__main__":
         defaultTimes.append(time.time()-start1)
         defaultOps.append(default.partitionIterations)
 
-      #   print("starting dynamic")
-      #   y = inp[:]
-      #   dynamic = Dynamic(y)
-      #   print("done copying")
-      #   start2 = time.time()
-      #   dynamicResult = dynamic.qs(kth, 0, len(inp)-1)
-      #   dynamicTimes.append(time.time()-start2)
-      #   dynamicOps.append(dynamic.partitionIterations)
+        print("starting dynamic")
+        y = inp[:]
+        dynamic = Dynamic(y, .4, .6)
+        print("done copying")
+        start2 = time.time()
+        dynamicResult = dynamic.qs(kth, 0, len(inp)-1)
+        dynamicTimes.append(time.time()-start2)
+        dynamicOps.append(dynamic.partitionIterations)
 
-      #   print("starting fra")
-      #   floydRivest = FloydRivest(inp)
-      #   start3 = time.time()
-      #   fraResult = floydRivest.select(kth-1, 0, len(inp)-1)
-      #   fraTimes.append(time.time()-start3)
+        print("starting fra")
+        floydRivest = FloydRivest(inp)
+        start3 = time.time()
+        fraResult = floydRivest.select(kth-1, 0, len(inp)-1)
+        fraTimes.append(time.time()-start3)
 
         if (verifyResults):
             sorted_array = sorted(inp)
             correctVal = sorted_array[kth-1]
-            # assert correctVal == defaultResult == dynamicResult == fraResult
+            assert correctVal == defaultResult == dynamicResult == fraResult
 
     print("for list size " + str(array_size) + "...")
     print("\n TIMES \n")
     print("Default takes on average " + str(avg(defaultTimes)) +
           ", here are each of the times: ", defaultTimes)
-#     print("Dynamic takes on average " + str(avg(dynamicTimes)) +
-#           ", here are each of the times: ", dynamicTimes)
-#     print("Floyd-Rivest takes on average " + str(avg(fraTimes)) +
-#           ", here are each of the times: ", fraTimes)
+    print("Dynamic takes on average " + str(avg(dynamicTimes)) +
+          ", here are each of the times: ", dynamicTimes)
+    print("Floyd-Rivest takes on average " + str(avg(fraTimes)) +
+          ", here are each of the times: ", fraTimes)
     print("\n OPERATIONS \n")
     print("Default takes on average " + str(avg(defaultOps)) +
           ", here are each of the operations: ", defaultOps)
-#     print("Dynamic takes on average " + str(avg(dynamicOps)) +
-#           ", here are each of the operations: ", dynamicOps)
+    print("Dynamic takes on average " + str(avg(dynamicOps)) +
+          ", here are each of the operations: ", dynamicOps)

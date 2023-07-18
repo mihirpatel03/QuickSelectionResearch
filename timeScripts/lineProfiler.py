@@ -73,14 +73,15 @@ if __name__ == "__main__":
     #     test()
     # lp.print_stats()
 
-    # pr = cProfile.Profile()
-    # pr.enable()
-    # x = createTestArray(100000000, 4000000)
-    # pr.disable()
+    pr = cProfile.Profile()
+    pr.enable()
+    x = createTestArray(10000000, 8000000)
+    y = shuffleTestArray(10000000, 8000000)
+    pr.disable()
 
-    # result = io.StringIO()
-    # pstats.Stats(pr, stream=result).strip_dirs().print_stats()
-    # print(result.getvalue())
+    result = io.StringIO()
+    pstats.Stats(pr, stream=result).strip_dirs().print_stats()
+    print(result.getvalue())
 
 
 # if __name__ == "__main__":
