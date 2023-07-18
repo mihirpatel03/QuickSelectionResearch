@@ -15,6 +15,13 @@ def createTestArray(maxVal, numItems):
     return testArray
 
 
+def shuffleTestArray(maxVal, numItems):
+    testArray = [i for i in range(maxVal)]
+
+    random.shuffle(testArray)
+    return testArray[0:numItems]
+
+
 def printHits(input_result):
     linesList = input_result.split("\n")
     totalHits = 0
