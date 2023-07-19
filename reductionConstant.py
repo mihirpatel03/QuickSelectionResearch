@@ -40,11 +40,11 @@ if __name__ == "__main__":
         default.qs(kth, 0, len(inp)-1)
         defaultConstant += default.constantsList
 
-        dynamic = Dynamic(inp, .4, .6)
+        dynamic = Dynamic(inp, [.4, .6])
         dynamic.qs(kth, 0, len(inp)-1)
         dynamicConstant += dynamic.constantsList
 
-        dynamic1 = Dynamic(inp, .16, .83)
+        dynamic1 = Dynamic(inp, [.25, .5, .75])
         dynamic1.qs(kth, 0, len(inp)-1)
         dynamic1Constant += dynamic1.constantsList
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print("for bounds .4, .6, dynamic constant is " + str(dynamicC))
 
     dynamic1C = sum(dynamic1Constant)/len(dynamic1Constant)
-    print("for bounds .16, .83, dynamic constant is " + str(dynamic1C))
+    print("for bounds .1, .5, .9, dynamic constant is " + str(dynamic1C))
 
     defaultC = sum(defaultConstant)/len(defaultConstant)
     print("default constant is " + str(defaultC))

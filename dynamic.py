@@ -2,13 +2,12 @@ import random
 
 
 class Dynamic:
-    def __init__(self, input_array, lo, hi):
+    def __init__(self, input_array, bounds):
         self.partitionIterations = 0
         self.findConstant = True
         self.constantsList = []
         self.arr = input_array
-        self.lowerBound = lo
-        self.upperBound = hi
+        self.bounds = bounds
 
     def qs(self, k, l, r):
         if r == l:
@@ -49,19 +48,16 @@ class Dynamic:
         return idx
 
     def dynamic(self, k, l, r):
-        if (r-l) > 3:
-            numSample = 3
-            sampleArray = random.sample(range(l, r), numSample)
+        if (r-l) > len(self.bounds)+1:
+            sampleArray = random.sample(range(l, r), len(self.bounds)+1)
             sampleDict = {}
             for i in range(len(sampleArray)):
                 sampleDict[self.arr[sampleArray[i]]] = sampleArray[i]
             sortedDict = sorted(sampleDict.copy())
-            percentage = k/float(r-l)
-            if percentage < self.lowerBound:
-                return sampleDict[sortedDict[1]]
-            elif percentage > self.upperBound:
-                return sampleDict[sortedDict[2]]
-            else:
-                return sampleDict[sortedDict[1]]
+            percentage = k/float(r-l+1)
+            for i in range(len(self.bounds)):
+                if percentage < self.bounds[i]:
+                    return sampleDict[sortedDict[i]]
+            return sampleDict[sortedDict[-1]]
         else:
             return int(random.randint(l, r))
