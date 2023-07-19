@@ -34,17 +34,16 @@ def avg(input_list):
 
 if __name__ == "__main__":
 
-    max_value, array_size, numRuns = 100000000, 64000000, 1
+    max_value, array_size, numRuns = 100000000, 32000, 5
     defaultTimes, dynamicTimes, fraTimes = [], [], []
     defaultOps, dynamicOps, fraOps = [], [], []
     for i in range(numRuns):
-        print("starting run " + str(i) + " of " + str(numRuns))
+        print("starting run " + str(i+1) + " of " + str(numRuns))
         inp = sampleTestArray(max_value, array_size)
         kth = random.randint(1, len(inp)-1)
 
         print("starting default")
-        x = inp[:]
-        default = Default(x)
+        default = Default(inp[:], False)
         print("done copying")
         start1 = time.time()
         defaultResult = default.qs(kth, 0, len(inp)-1)
@@ -52,8 +51,7 @@ if __name__ == "__main__":
         defaultOps.append(default.partitionIterations)
 
         print("starting dynamic")
-        y = inp[:]
-        dynamic = Dynamic(y, .4, .6)
+        dynamic = Dynamic(inp[:], [.4, .6], False)
         print("done copying")
         start2 = time.time()
         dynamicResult = dynamic.qs(kth, 0, len(inp)-1)
@@ -65,6 +63,7 @@ if __name__ == "__main__":
         start3 = time.time()
         fraResult = floydRivest.select(kth-1, 0, len(inp)-1)
         fraTimes.append(time.time()-start3)
+        fraOps.append(floydRivest.partitionIterations)
 
         if (verifyResults):
             sorted_array = sorted(inp)
@@ -84,3 +83,5 @@ if __name__ == "__main__":
           ", here are each of the operations: ", defaultOps)
     print("Dynamic takes on average " + str(avg(dynamicOps)) +
           ", here are each of the operations: ", dynamicOps)
+    print("Floyd-Rivest takes on average " + str(avg(fraOps)) +
+          ", here are each of the operations: ", fraOps)

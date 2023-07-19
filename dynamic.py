@@ -2,9 +2,9 @@ import random
 
 
 class Dynamic:
-    def __init__(self, input_array, bounds):
+    def __init__(self, input_array, bounds, findConstant):
         self.partitionIterations = 0
-        self.findConstant = True
+        self.findConstant = findConstant
         self.constantsList = []
         self.arr = input_array
         self.bounds = bounds

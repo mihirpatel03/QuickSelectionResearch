@@ -2,7 +2,7 @@ import random
 
 
 class Default:
-    def __init__(self, input_array):
+    def __init__(self, input_array, findConstant):
         self.partitionIterations = 0
         self.findConstant = True
         self.constantsList = []
