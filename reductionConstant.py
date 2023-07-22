@@ -3,6 +3,7 @@ import random
 from default import Default
 from dynamic import Dynamic
 from floydRivest import FloydRivest
+from dualPivot import DualPivot
 
 
 def sampleTestArray(maxVal, numItems):
@@ -30,29 +31,32 @@ def avg(input_list):
 if __name__ == "__main__":
 
     max_value, array_size, numRuns = 10000000, 1000000, 25
-    defaultConstant, dynamicConstant, dynamic1Constant = [], [], []
+    defaultConstant, dynamicConstant, dualConstant = [], [], []
     for i in range(numRuns):
         print("starting run " + str(i) + " of " + str(numRuns))
         inp = sampleTestArray(max_value, array_size)
         kth = random.randint(1, len(inp)-1)
 
-        default = Default(inp[:])
-        default.qs(kth, 0, len(inp)-1)
+        default = Default(inp[:], True)
+        x = default.qs(kth, 0, len(inp)-1)
         defaultConstant += default.constantsList
 
-        dynamic = Dynamic(inp, [.4, .6])
-        dynamic.qs(kth, 0, len(inp)-1)
+        dynamic = Dynamic(inp[:], [.4, .6], True)
+        y = dynamic.qs(kth, 0, len(inp)-1)
         dynamicConstant += dynamic.constantsList
 
-        dynamic1 = Dynamic(inp, [.25, .5, .75])
-        dynamic1.qs(kth, 0, len(inp)-1)
-        dynamic1Constant += dynamic1.constantsList
+        dualPivot = DualPivot(inp, True)
+        z = dualPivot.qs(kth, 0, len(inp)-1)
+        dualConstant += dualPivot.constantsList
+
+        print(x, y, z)
+        assert x == y == z
 
     dynamicC = sum(dynamicConstant)/len(dynamicConstant)
     print("for bounds .4, .6, dynamic constant is " + str(dynamicC))
 
-    dynamic1C = sum(dynamic1Constant)/len(dynamic1Constant)
-    print("for bounds .1, .5, .9, dynamic constant is " + str(dynamic1C))
+    dualC = sum(dualConstant)/len(dualConstant)
+    print("dual pivot constant is " + str(dualC))
 
     defaultC = sum(defaultConstant)/len(defaultConstant)
     print("default constant is " + str(defaultC))
