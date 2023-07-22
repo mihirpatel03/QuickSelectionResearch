@@ -30,7 +30,7 @@ def avg(input_list):
 
 if __name__ == "__main__":
 
-    max_value, array_size, numRuns = 10000000, 1000000, 25
+    max_value, array_size, numRuns = 10000000, 1000000, 1
     defaultConstant, dynamicConstant, dualConstant = [], [], []
     for i in range(numRuns):
         print("starting run " + str(i) + " of " + str(numRuns))

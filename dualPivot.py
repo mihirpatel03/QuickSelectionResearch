@@ -13,9 +13,15 @@ class DualPivot:
             return self.arr[l]
         if r-l == 1:
             if k == 0:
-                return self.arr[l]
+                if self.arr[l] > self.arr[r]:
+                    return self.arr[r]
+                else:
+                    return self.arr[l]
             else:
-                return self.arr[r]
+                if self.arr[l] > self.arr[r]:
+                    return self.arr[l]
+                else:
+                    return self.arr[r]
         dualPivots = random.sample(range(l, r), 2)
         p = self.partition(dualPivots[0], dualPivots[1], l, r)
         left_length = p[0]-l
