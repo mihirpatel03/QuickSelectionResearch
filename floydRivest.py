@@ -4,7 +4,6 @@ import random
 
 class FloydRivest:
     def __init__(self, input_array):
-        self.partitionIterations = 0
         self.arr = input_array
 
     def sign(self, x):
@@ -38,7 +37,6 @@ class FloydRivest:
             if self.arr[right] > t:
                 self.arr[left], self.arr[right] = self.arr[right], self.arr[left]
             while i < j:
-                self.partitionIterations += 1
                 self.arr[i], self.arr[j] = self.arr[j], self.arr[i]
                 i = i + 1
                 j = j-1
